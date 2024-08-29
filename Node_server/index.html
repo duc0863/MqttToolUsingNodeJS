@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Messages</title>
+    <img src="https://www.vnpt-technology.vn/front/images/logo_vnpt_technology_vn.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        img {
+            vertical-align: center;
+            border-style: none;
+            width: 50%;
+        }
+
+        #filterInput,
+        #startTime,
+        #endTime {
+            margin-bottom: 20px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+
+        .filter-container div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-container label {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MQTT Messages</h1>
+    <div class="filter-container">
+        <div>
+            <label for="filterInput">Filter by EUI64:</label>
+            <input type="text" id="filterInput" placeholder="Filter by EUI64...">
+        </div>
+        <div>
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" placeholder="Start Time">
+        </div>
+        <div>
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" placeholder="End Time">
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>EUI64</th>
+                <th>Timestamp</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody id="messages">
+            <!-- Messages will be appended here -->
+        </tbody>
+    </table>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const allMessages = [];
+
+        socket.on('mqttMessage', data => {
+            allMessages.push(data);
+            filterAndDisplayMessages();
+        });
+
+        document.getElementById('filterInput').addEventListener('input', filterAndDisplayMessages);
+        document.getElementById('startTime').addEventListener('input', filterAndDisplayMessages);
+        document.getElementById('endTime').addEventListener('input', filterAndDisplayMessages);
+
+        function filterAndDisplayMessages() {
+            const filterValue = document.getElementById('filterInput').value.toLowerCase();
+            const startTime = new Date(document.getElementById('startTime').value);
+            const endTime = new Date(document.getElementById('endTime').value);
+
+            const filteredMessages = allMessages.filter(msg => {
+                const eui64 = msg.eui64.toLowerCase();
+                const timestamp = new Date(msg.currentDateTime);
+                const isWithinTimeRange = (!isNaN(startTime) ? timestamp >= startTime : true) &&
+                                          (!isNaN(endTime) ? timestamp <= endTime : true);
+                return eui64.includes(filterValue) && isWithinTimeRange;
+            });
+
+            displayMessages(filteredMessages);
+        }
+
+        function displayMessages(messages) {
+            const table = document.getElementById('messages');
+            table.innerHTML = '';
+            messages.forEach(data => {
+                const row = document.createElement('tr');
+
+                const eui64Cell = document.createElement('td');
+                eui64Cell.textContent = data.eui64;
+                row.appendChild(eui64Cell);
+
+                const timestampCell = document.createElement('td');
+                timestampCell.textContent = data.currentDateTime;
+                row.appendChild(timestampCell);
+
+                const messageCell = document.createElement('td');
+                messageCell.textContent = JSON.stringify(data.message);
+                row.appendChild(messageCell);
+
+                table.appendChild(row);
+            });
+        }
+    </script>
+</body>
+
+</html>

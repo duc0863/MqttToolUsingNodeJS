@@ -1,0 +1,62 @@
+{
+    "key1": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x15",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0x7CC6B6FFFE2B0046",
+            "endpoint": 1
+        }
+    }],
+    "key2": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x30",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0xB4E3F9FFFE3951B4",
+            "endpoint": 1
+        }
+    }],
+    "key3": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x30",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0x540F57FFFE8DD38A",
+            "endpoint": 1
+        }
+    }],
+    "key4": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x30",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0x94DEB8FFFE9A61D1",
+            "endpoint": 1
+        }
+    }],
+    "key5": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x15",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0x7CC6B6FFFE2B29D5",
+            "endpoint": 1
+        }
+    }],
+    "key6": [{
+        "clusterId": "0x0000",
+        "attributeId": "0x0001",
+        "attributeBuffer": "0x15",
+        "attributeDataType": "0x20",
+        "deviceEndpoint": {
+            "eui64": "0x7CC6B6FFFE2B2963",
+            "endpoint": 1
+        }
+    }]
+}
